@@ -1,0 +1,11 @@
+PLAN
+
+Project: Chess Engine that can beat me
+
+Features:
+- UI 
+- Vector movement
+- En passant
+- 2 player chess
+- Random enemy
+- Chess Engine
