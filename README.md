@@ -15,7 +15,7 @@ I'm planning to create a chess a chess game with a 2 player mode and AI mode bas
 
 - Add game select screen
 - Add 'Buttonclicked()'
-
+- Finish 'gameSelect' class
 
 ## Chess engine
 

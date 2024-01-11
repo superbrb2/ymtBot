@@ -52,6 +52,10 @@ def draw_board(screen):
             pygame.draw.rect(screen, color, pygame.Rect(col*SQ_WIDTH, row*SQ_HEIGHT, SQ_WIDTH, SQ_HEIGHT))  
 
 
+def clickedbutton():
+    pass
+
+
 load_images()
 running = True
 while running:
@@ -59,6 +63,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             
+        # Checks for menu button press
+        if event.type == pygame.MOUSEBUTTONDOWN and menu == True:
+            clickedbutton()
     draw_init(screen,game_state)
     
     clock.tick(60)
