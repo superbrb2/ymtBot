@@ -1,11 +1,13 @@
 import pygame
 import engine
+import selectscreen
 
 HEIGHT = 700
 WIDTH = 700
 DIMENSION = 8
 SQ_HEIGHT = HEIGHT / DIMENSION
 SQ_WIDTH = WIDTH / DIMENSION
+menu = True
 images = {}
 
 pygame.init()
@@ -17,6 +19,7 @@ screen.fill(pygame.Color('white'))
 pygame.display.set_caption('Chess')
 
 game_state = engine.gameState()
+game_select = selectscreen.gameSelect(screen,WIDTH,HEIGHT)
 
 
 def load_images():
@@ -25,8 +28,12 @@ def load_images():
         images[peice] = pygame.transform.scale(pygame.image.load("img/" + peice + ".png"), (SQ_WIDTH, SQ_HEIGHT))
 
 def draw_init(screen,game_state):
-    draw_board(screen)
-    draw_peices(screen,game_state)
+    if menu == True:
+        draw_board(screen)
+        game_select.display_menu(screen)
+    else:
+        draw_board(screen)
+        draw_peices(screen,game_state)
     
 
 def draw_peices(screen,game_state):
@@ -51,7 +58,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    
+            
     draw_init(screen,game_state)
     
     clock.tick(60)
