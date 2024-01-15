@@ -1,6 +1,8 @@
 import pygame
 import engine
 import selectscreen
+import two_player
+import AIengine
 
 HEIGHT = 700
 WIDTH = 700
@@ -52,9 +54,6 @@ def draw_board(screen):
             pygame.draw.rect(screen, color, pygame.Rect(col*SQ_WIDTH, row*SQ_HEIGHT, SQ_WIDTH, SQ_HEIGHT))  
 
 
-def clickedbutton():
-    pass
-
 
 load_images()
 running = True
@@ -65,7 +64,14 @@ while running:
             
         # Checks for menu button press
         if event.type == pygame.MOUSEBUTTONDOWN and menu == True:
-            clickedbutton()
+            if game_select.button_pressed() == '2P':
+                menu = False
+                two_player.begin()
+                
+            if game_select.button_pressed() == 'AI':
+                menu = False
+                AIengine.begin()
+                 
     draw_init(screen,game_state)
     
     clock.tick(60)

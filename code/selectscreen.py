@@ -23,3 +23,12 @@ class gameSelect():
     
     def get_option(self):
         pass
+    
+    def button_pressed(self):
+        mouse_pos = pygame.mouse.get_pos()
+        # First Button position
+        if self.WIDTH/14 <= mouse_pos[0] <= (self.WIDTH/14)+((self.WIDTH*6)/7) and self.HEIGHT*0.45 <= mouse_pos[1] <= (self.HEIGHT*0.45)+(self.HEIGHT/7):
+            return self.option_list[0]
+        # Second Button position
+        if self.WIDTH/14 <= mouse_pos[0] <= (self.WIDTH/14)+((self.WIDTH*6)/7) and (self.HEIGHT*5)/7 <= mouse_pos[1] <= ((self.HEIGHT*5)/7)+(self.HEIGHT/7):
+            return self.option_list[1]
