@@ -17,6 +17,7 @@ I'm planning to create a chess a chess game with a 2 player mode and AI mode bas
 - Add 'Buttonclicked()'
 - Finish 'gameSelect' class
 - Create 'notation' branch
+- Hide menu when button pressed
 
 ## Chess engine
 

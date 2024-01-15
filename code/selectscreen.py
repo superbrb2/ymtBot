@@ -21,9 +21,6 @@ class gameSelect():
     def hide_menu(self):
         pass
     
-    def get_option(self):
-        pass
-    
     def button_pressed(self):
         mouse_pos = pygame.mouse.get_pos()
         # First Button position
