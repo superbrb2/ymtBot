@@ -20,6 +20,9 @@ clock = pygame.time.Clock()
 screen.fill(pygame.Color('white'))
 pygame.display.set_caption('Chess')
 
+# https://www.chess.com/terms/fen-chess#:~:text=It%20starts%20describing%20the%20content,and%20go%20to%20the%20eighth.
+fen_position = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' # Splice string into an array and parse for each row
+
 game_state = engine.gameState()
 game_select = selectscreen.gameSelect(screen,WIDTH,HEIGHT)
 
@@ -61,7 +64,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-            
+
         # Checks for menu button press
         if event.type == pygame.MOUSEBUTTONDOWN and menu == True:
             if game_select.button_pressed() == '2P':

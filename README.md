@@ -13,11 +13,9 @@ I'm planning to create a chess a chess game with a 2 player mode and AI mode bas
 
 ## TODO
 
-- Add game select screen
-- Add 'Buttonclicked()'
-- Finish 'gameSelect' class
 - Create 'notation' branch
-- Hide menu when button pressed
+- Movable peices
+- 
 
 ## Chess engine
 
@@ -35,3 +33,6 @@ None so far...
 |Game select Screen |June - July|
 |2 player chess Mode | July - Sep|
 |Chess Engine Mode | Sep - Dec|
+
+## Activity
+![Activity](https://repobeats.axiom.co/api/embed/8485f95ff6ce0c87fba3b94542ae6e05b166ea77.svg "Repobeats analytics image")
