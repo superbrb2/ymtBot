@@ -18,9 +18,6 @@ class gameSelect():
             self.screen.blit(font.render(menu_options[i],True,(255,255,255)),(round(self.WIDTH/14)+25,round(locations[i])+25))
 
         
-    def hide_menu(self):
-        pass
-    
     def button_pressed(self):
         mouse_pos = pygame.mouse.get_pos()
         # First Button position
