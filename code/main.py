@@ -29,8 +29,9 @@ game_select = selectscreen.gameSelect(screen,WIDTH,HEIGHT)
 
 def load_images():
     peices = ["bR", "bN", "bB", "bQ", "bK", "wQ", "wK", "wB", "wN", "wR", "bp", "wp"]   
-    for peice in peices:
-        images[peice] = pygame.transform.scale(pygame.image.load("img/" + peice + ".png"), (SQ_WIDTH, SQ_HEIGHT))
+    peice_names = ['R','N','B','Q','K','q','k','b','n','r','P','p']
+    for i in range(len(peices)):
+        images[peice_names[i]] = pygame.transform.scale(pygame.image.load("img/" + peices[i] + ".png"), (SQ_WIDTH, SQ_HEIGHT))
 
 def draw_init(screen,game_state):
     if menu == True:
@@ -45,7 +46,7 @@ def draw_peices(screen,game_state):
     for row in range(DIMENSION):
         for col in range(DIMENSION):
             piece = game_state.board[row][col]
-            if piece != '--':
+            if piece != '-':
                 screen.blit(images[piece], pygame.Rect(col*SQ_WIDTH, row*SQ_HEIGHT, SQ_WIDTH, SQ_HEIGHT))
                 
                 
@@ -70,6 +71,7 @@ while running:
             if game_select.button_pressed() == '2P':
                 menu = False
                 two_player.begin()
+                game_state.decode_fen(fen_position)
                 
             if game_select.button_pressed() == 'AI':
                 menu = False
