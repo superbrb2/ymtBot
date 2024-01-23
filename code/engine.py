@@ -14,10 +14,15 @@ class gameState():
         ]
         
         self.white_to_move = True
+        self.enpassant_pos: tuple 
+        self.castling: str
         
+        
+                
     def decode_fen(self,fen):
-        fp = fen_parser.FenParser(fen)
-        print(fp.parse())
+        fen_to_position = fen_parser.FenToChessPosition(fen)
+        print(fen_to_position.parse())
     
     def encode_fen(self):
-        pass
+        position_to_fen = fen_parser.ChessPositionToFEN(self.board,self.white_to_move,self.enpassant_pos,self.castling)
+        print(position_to_fen.board_to_fen())
