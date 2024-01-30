@@ -13,12 +13,12 @@ I'm planning to create a chess a chess game with a 2 player mode and AI mode bas
 
 ## TODO
 
-- Create 'notation' branch
+- Create peice classes
 - Movable peices
 - Vectors
-- Finish get_end() 
 - Finish FEN de/encoding
 - Find where FEN is needed
+- Finish peices!!!!
 
 ## Chess engine
 
