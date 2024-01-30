@@ -1,13 +1,9 @@
-from unittest import TestCase
 from itertools import chain
 import re
 
 class ChessPositionToFEN:
-	def __init__(self, position, white_to_move, enpassant_pos, castling):
+	def __init__(self, position):
 		self.position = position
-		self.white_to_move = white_to_move
-		self.enpassant_pos = enpassant_pos
-		self.castling = castling
 
 	def board_to_fen(self):
 		fen = ''
@@ -31,18 +27,6 @@ class ChessPositionToFEN:
 
 		fen = fen[:-1]  
 		
-		# Player turn 
-		if self.white_to_move == True:
-			fen += ' w'
-		else:
-			fen += ' b'
-		
-		# castling turn
-		fen += ' ' + self.castling
-		
-		# Enpassant location
-		fen += ' ' + self.enpassant_pos
-		
 		return fen
 
 
@@ -53,19 +37,8 @@ class FenToChessPosition():
 
 	def parse(self):
 		ranks = self.fen_str.split(" ")[0].split("/")
-		ending = self.get_end()
-		print(f'this is{ending}')
 		pieces_on_all_ranks = [self.parse_rank(rank) for rank in ranks]
 		return pieces_on_all_ranks
-		# white_to_move, enpassant_pos, castling
-
-	def get_end(self):
-		fen_str = self.fen_str
-		ending = ''
-		for i in range(len(fen_str)):
-			pass
-		ending = ending[::-1]
-		return ending
 
 	def parse_rank(self, rank):
 		rank_re = re.compile("(\d|[kqbnrpKQBNRP])")
