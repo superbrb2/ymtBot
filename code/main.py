@@ -19,13 +19,13 @@ pygame.init()
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 clock = pygame.time.Clock()
-screen.fill(pygame.Color('white'))
+screen.fill((221, 201, 180))
 pygame.display.set_caption('Chess')
 
 # https://www.chess.com/terms/fen-chess#:~:text=It%20starts%20describing%20the%20content,and%20go%20to%20the%20eighth.
 fen_position = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
 
-game_state = engine.gameState()
+
 game_select = selectscreen.gameSelect(screen,WIDTH,HEIGHT)
 
 
@@ -41,13 +41,13 @@ while running:
             if game_select.button_pressed() == '2P':
                 menu = False
                 two_player.begin()
-                game_state.decode_fen(fen_position)
+                engine.game_state.decode_fen()
                 
             if game_select.button_pressed() == 'AI':
                 menu = False
                 AIengine.begin()
                  
-    draw_init(screen,menu,game_select,game_state,DIMENSION,images,SQ_HEIGHT,SQ_WIDTH)
+    draw_init(screen,menu,game_select,engine.game_state,DIMENSION,images,SQ_HEIGHT,SQ_WIDTH)
     
     clock.tick(60)
     pygame.display.flip()

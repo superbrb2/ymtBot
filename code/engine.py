@@ -42,3 +42,17 @@ class gameState():
         position_to_fen = fen_parser.ChessPositionToFEN(self.board,self.white_to_move,self.enpassant_pos,self.castling)
         self.fen_position = position_to_fen.board_to_fen()
         return self.fen_position
+    
+    def get_peice_position(self,id):
+        for row in range(8):
+            for col in range(8):
+                if self.peice_board[row][col].get_id() == id:
+                    return (col,row)
+                
+        return None
+    
+    
+    def test(self):
+        print(self.peice_board[0][7].get_position)
+        
+game_state = gameState()

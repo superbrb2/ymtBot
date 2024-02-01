@@ -4,11 +4,13 @@ class peice():
     def __init__(self):
         self.first_move: bool = True
         self.is_white: bool 
-        self.position: tuple = self.get_position()
+        self.position: tuple
+        self.id: str
         
     
     def get_position(self):
-        return 
+        import engine as e
+        return e.game_state.get_peice_position(self.id)
     
      
     def peice_captured(self):
@@ -21,23 +23,28 @@ class peice():
         else:
             pass
     
+    def draw_piece(self):
+        pass
+    
     
 class Rook(peice):
     def __init__(self,id):
         super().__init__()
+        self.id = id
         self.is_white = True if id[0] == 'w' else False
+        self.position = self.get_position()
             
     
     def get_moves(self):
         possible_moves = []
         # up,right,down,left
-        for i in range(4):
+        for i in range(7):
             for j in range(7):
                 pass
         return possible_moves
             
             
-class Bishop(peice,id):
+class Bishop(peice):
     def __init__(self,color):
         super().__init__()
         self.is_white = color
@@ -47,7 +54,7 @@ class Bishop(peice,id):
         return []
             
             
-class Knight(peice,id):
+class Knight(peice):
     def __init__(self,color):
         super().__init__()
         self.is_white = color
@@ -57,7 +64,7 @@ class Knight(peice,id):
         return []
             
             
-class Queen(peice,id):
+class Queen(peice):
     def __init__(self,color):
         super().__init__()
         self.is_white = color
@@ -67,7 +74,7 @@ class Queen(peice,id):
         return []
             
             
-class King(peice,id):
+class King(peice):
     def __init__(self,color):
         super().__init__()
         self.is_white = color
@@ -77,7 +84,7 @@ class King(peice,id):
         return []
             
             
-class Pawn (peice,id):
+class Pawn(peice):
     def __init__(self,color):
         super().__init__()
         self.is_white = color
@@ -108,7 +115,7 @@ def draw_init(screen,menu,game_select,game_state,DIMENSION,images,SQ_HEIGHT,SQ_W
 def draw_peices(screen,game_state,DIMENSION,images,SQ_HEIGHT,SQ_WIDTH):
     for row in range(DIMENSION):
         for col in range(DIMENSION):
-            piece = game_state.board[row][col]
+            piece = game_state.image_board[row][col]
             if piece != '-':
                 screen.blit(images[piece], pygame.Rect(col*SQ_WIDTH, row*SQ_HEIGHT, SQ_WIDTH, SQ_HEIGHT))
                 

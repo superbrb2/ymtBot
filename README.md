@@ -19,6 +19,8 @@ I'm planning to create a chess a chess game with a 2 player mode and AI mode bas
 - Finish FEN de/encoding
 - Find where FEN is needed
 - Finish peices!!!!
+- Change colour of clicked button
+- PRIORITY: Get position of peice
 
 ## Chess engine
 
