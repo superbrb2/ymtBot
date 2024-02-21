@@ -1,17 +1,17 @@
 import pygame
+import engine
 
 class peice():
-    def __init__(self):
+    def __init__(self,id,pos):
         self.first_move: bool = True
         self.is_white: bool 
-        self.position: tuple
-        self.id: str
+        self.position: tuple = pos
+        self.id: str = id
         
-    
-    def get_position(self):
-        import engine as e
-        return e.game_state.get_peice_position(self.id)
-    
+    # Gets overided in child classes
+    def get_moves(self):
+        return None
+
      
     def peice_captured(self):
         pass
@@ -28,11 +28,11 @@ class peice():
     
     
 class Rook(peice):
-    def __init__(self,id):
-        super().__init__()
+    def __init__(self,id,pos):
+        super().__init__(id,pos)
         self.id = id
         self.is_white = True if id[0] == 'w' else False
-        self.position = self.get_position()
+        self.position: tuple
             
     
     def get_moves(self):
@@ -45,9 +45,9 @@ class Rook(peice):
             
             
 class Bishop(peice):
-    def __init__(self,color):
-        super().__init__()
-        self.is_white = color
+    def __init__(self,id,pos):
+        super().__init__(id,pos)
+        
     
     def get_moves(self):
         # Vectors inside array
@@ -55,9 +55,9 @@ class Bishop(peice):
             
             
 class Knight(peice):
-    def __init__(self,color):
-        super().__init__()
-        self.is_white = color
+    def __init__(self,id,pos):
+        super().__init__(id,pos)
+        
     
     def get_moves(self):
         # Vectors inside array
@@ -65,9 +65,9 @@ class Knight(peice):
             
             
 class Queen(peice):
-    def __init__(self,color):
-        super().__init__()
-        self.is_white = color
+    def __init__(self,id,pos):
+        super().__init__(id,pos)
+        
     
     def get_moves(self):
         # Vectors inside array
@@ -75,9 +75,9 @@ class Queen(peice):
             
             
 class King(peice):
-    def __init__(self,color):
-        super().__init__()
-        self.is_white = color
+    def __init__(self,id,pos):
+        super().__init__(id,pos)
+        
     
     def get_moves(self):
         # Vectors inside array
@@ -85,9 +85,9 @@ class King(peice):
             
             
 class Pawn(peice):
-    def __init__(self,color):
-        super().__init__()
-        self.is_white = color
+    def __init__(self,id,pos):
+        super().__init__(id,pos)
+
     
     def get_moves(self):
         # Vectors inside array

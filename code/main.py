@@ -1,9 +1,10 @@
 import pygame
-import engine
 import selectscreen
 import two_player
 import AIengine
-from peices import *
+import engine
+
+from images import *
 
 HEIGHT = 700
 WIDTH = 700
@@ -13,6 +14,7 @@ SQ_HEIGHT = HEIGHT / DIMENSION
 SQ_WIDTH = WIDTH / DIMENSION
 menu = True
 images = {}
+
 
 pygame.init()
 
@@ -27,6 +29,7 @@ fen_position = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
 
 
 game_select = selectscreen.gameSelect(screen,WIDTH,HEIGHT)
+game_state = engine.gameState()
 
 
 load_images(images,SQ_HEIGHT,SQ_WIDTH)
@@ -41,13 +44,12 @@ while running:
             if game_select.button_pressed() == '2P':
                 menu = False
                 two_player.begin()
-                engine.game_state.decode_fen()
                 
             if game_select.button_pressed() == 'AI':
                 menu = False
                 AIengine.begin()
                  
-    draw_init(screen,menu,game_select,engine.game_state,DIMENSION,images,SQ_HEIGHT,SQ_WIDTH)
+    draw_init(screen,menu,game_select,DIMENSION,images,SQ_HEIGHT,SQ_WIDTH,game_state.board.image_board)
     
     clock.tick(60)
     pygame.display.flip()
