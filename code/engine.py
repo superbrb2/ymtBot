@@ -72,7 +72,20 @@ class Board():
         current_count = len(self.white_pawns)+len(self.white_pieces)+len(self.black_pawns)+len(self.black_pieces)
         if current_count != self.piece_count:
             return self.piece_count - current_count
-        return 0 
+        return 0
+    
+    def find_peice(self,pos):
+        for i in range(7):
+            if pos == self.black_pieces[i].get_position():
+                return (str(i) + 'bP')
+            elif pos == self.white_pieces[i].get_position():
+                return (str(i) + 'wP')
+            elif pos == self.black_pawns[i].get_position():
+                return (str(i) + 'bp')
+            elif pos == self.white_pawns[i].get_position():
+                return (str(i) + 'wp')
+                
+                
         
         '''
         self.peice_board = [
@@ -89,14 +102,14 @@ class Board():
 
 class ButtonArray():
     def __init__(self):
-        self.input_pos: list
+        self.input_pos: list = [-1,-1]
         
     def get_position_of_press(self):
         mouse_pos = pygame.mouse.get_pos()
         x = mouse_pos[0]//SQ_WIDTH
         y = mouse_pos[1]//SQ_HEIGHT
         
-        return tuple(x,y)
+        return (x,y)
         
         
     def add_button_press(self):
@@ -104,7 +117,6 @@ class ButtonArray():
         
         if self.input_pos[1] != -1:
             self.input_pos = [-1,-1]
-            return
         
         if self.input_pos[0] == -1:
             self.input_pos[0] = new_pos
@@ -115,12 +127,10 @@ class ButtonArray():
     
     def get_input_pos(self):
         if self.input_pos[1] == -1:
-            return -1
+            return [-1,-1]
         return self.input_pos
             
             
-        
-    
 
 class gameState():         
     def __init__(self):
@@ -134,6 +144,18 @@ class gameState():
         
         self.pos_last_move: tuple
         
+    def button_press(self):
+        self.button_array.add_button_press()
+        if self.button_array.get_input_pos()[1] != -1:
+            self.pos_last_move = self.button_array.get_input_pos()[1]
+            self.move_pieces()
+            
+    def move_pieces(self):
+        piece_reference = self.board.find_peice(self.button_array.get_input_pos()[0])
+        print(self.button_array.get_input_pos())
+        # TODO: Check for peice with same pos
+        
+    
     def check_board(self):
         self.board.check_peices()
         

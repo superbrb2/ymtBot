@@ -14,6 +14,9 @@ class peice():
         self.id: str = id
         self.is_white: bool = True if self.id in 'PRNBQK'  else False
         
+    def update_position(self,pos):
+        self.pos = pos
+    
     def get_position(self):
         return self.position
     

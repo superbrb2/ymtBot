@@ -48,7 +48,9 @@ while running:
             if game_select.button_pressed() == 'AI':
                 menu = False
                 AIengine.begin()
-                 
+        
+        if event.type == pygame.MOUSEBUTTONDOWN and menu == False:
+            game_state.button_press()
     draw_init(screen,menu,game_select,images,game_state.board.image_board)
     
     clock.tick(60)
