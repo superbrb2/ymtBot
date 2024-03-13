@@ -16,11 +16,11 @@ def load_images(images):
 
 def draw_init(screen,menu,game_select,images,image_board):
     if menu == True:
-        draw_board(screen,DIMENSION,SQ_HEIGHT,SQ_WIDTH)
+        draw_board(screen)
         game_select.display_menu(screen)
     else:
-        draw_board(screen,DIMENSION,SQ_HEIGHT,SQ_WIDTH)
-        draw_peices(screen,DIMENSION,images,SQ_HEIGHT,SQ_WIDTH,image_board)
+        draw_board(screen)
+        draw_peices(screen,images,image_board)
     
 
 def draw_peices(screen,images,image_board):

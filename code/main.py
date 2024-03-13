@@ -28,11 +28,11 @@ pygame.display.set_caption('Chess')
 fen_position = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
 
 
-game_select = selectscreen.gameSelect(screen,WIDTH,HEIGHT)
+game_select = selectscreen.gameSelect(screen)
 game_state = engine.gameState()
 
 
-load_images(images,SQ_HEIGHT,SQ_WIDTH)
+load_images(images)
 running = True
 while running:
     for event in pygame.event.get():
@@ -49,7 +49,7 @@ while running:
                 menu = False
                 AIengine.begin()
                  
-    draw_init(screen,menu,game_select,DIMENSION,images,SQ_HEIGHT,SQ_WIDTH,game_state.board.image_board)
+    draw_init(screen,menu,game_select,images,game_state.board.image_board)
     
     clock.tick(60)
     pygame.display.flip()

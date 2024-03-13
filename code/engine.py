@@ -89,11 +89,14 @@ class Board():
 
 class ButtonArray():
     def __init__(self):
-        self.input_pos: list[tuple]
+        self.input_pos: list
         
     def get_position_of_press(self):
         mouse_pos = pygame.mouse.get_pos()
-        mouse_pos[0]//HEIGHT
+        x = mouse_pos[0]//SQ_WIDTH
+        y = mouse_pos[1]//SQ_HEIGHT
+        
+        return tuple(x,y)
         
         
     def add_button_press(self):
@@ -109,7 +112,11 @@ class ButtonArray():
             self.input_pos[1] = new_pos
             if self.input_pos[0] == self.input_pos[1]:
                 self.input_pos = [-1,-1]
-        
+    
+    def get_input_pos(self):
+        if self.input_pos[1] == -1:
+            return -1
+        return self.input_pos
             
             
         
