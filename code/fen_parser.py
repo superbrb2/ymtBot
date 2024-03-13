@@ -41,7 +41,7 @@ class FenToChessPosition():
 		return pieces_on_all_ranks
 
 	def parse_rank(self, rank):
-		rank_re = re.compile("(\d|[kqbnrpKQBNRP])")
+		rank_re = re.compile("(\d	|[kqbnrpKQBNRP])")
 		piece_tokens = rank_re.findall(rank)
 		pieces = self.flatten(map(self.expand_or_noop, piece_tokens))
 		return pieces

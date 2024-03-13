@@ -36,6 +36,30 @@ class Board():
             Pawn('bp8',(1,7)),
         ]
         
+        self.white_pieces = [
+            Rook('wr1',(7,0)),
+            Knight('wn1',(7,1)),
+            Bishop('wb1',(7,2)),
+            Queen('wq1',(7,3)),
+            King('wk1',(7,4)),
+            Bishop('wb2',(7,5)),
+            Knight('wn2',(7,6)),
+            Rook('wr2',(7,7))
+        ]
+        
+        self.black_pieces = [
+            Rook('br1',(0,0)),
+            Knight('bn1',(0,1)),
+            Bishop('bb1',(0,2)),
+            Queen('bq1',(0,3)),
+            King('bk1',(0,4)),
+            Bishop('bb2',(0,5)),
+            Knight('bn2',(0,6)),
+            Rook('br2',(0,7))
+        ]
+        
+        
+        
         '''
         self.peice_board = [
             [Rook('br1',(0,0)),Knight('bn1'),Bishop('bb1'),Queen('bq1'),King('bk1'),Bishop('bb2'),Knight('bn2'),Rook('br2')],
