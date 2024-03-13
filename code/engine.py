@@ -1,8 +1,18 @@
+import pygame
 import fen_parser
 from peices import *
 
+HEIGHT = 700
+WIDTH = 700
+
+DIMENSION = 8
+SQ_HEIGHT = HEIGHT / DIMENSION
+SQ_WIDTH = WIDTH / DIMENSION
+
 class Board():
     def __init__(self):
+        self.piece_count = 32
+        
         self.image_board = [
             ['r','n','b','q','k','b','n','r'],
             ['p','p','p','p','p','p','p','p'],
@@ -58,7 +68,11 @@ class Board():
             Rook('br2',(0,7))
         ]
         
-        
+    def check_peices(self):
+        current_count = len(self.white_pawns)+len(self.white_pieces)+len(self.black_pawns)+len(self.black_pieces)
+        if current_count != self.piece_count:
+            return self.piece_count - current_count
+        return 0 
         
         '''
         self.peice_board = [
@@ -73,15 +87,49 @@ class Board():
         ]
         '''
 
+class ButtonArray():
+    def __init__(self):
+        self.input_pos: list[tuple]
+        
+    def get_position_of_press(self):
+        mouse_pos = pygame.mouse.get_pos()
+        mouse_pos[0]//HEIGHT
+        
+        
+    def add_button_press(self):
+        new_pos: tuple = self.get_position_of_press()
+        
+        if self.input_pos[1] != -1:
+            self.input_pos = [-1,-1]
+            return
+        
+        if self.input_pos[0] == -1:
+            self.input_pos[0] = new_pos
+        elif self.input_pos[1] == -1:
+            self.input_pos[1] = new_pos
+            if self.input_pos[0] == self.input_pos[1]:
+                self.input_pos = [-1,-1]
+        
+            
+            
+        
+    
+
 class gameState():         
     def __init__(self):
         self.board = Board()
+        self.button_array = ButtonArray()
         self.fen_position: str = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
         
         self.white_to_move = True
         self.enpassant_pos: tuple 
         self.castling: str
-    
+        
+        self.pos_last_move: tuple
+        
+    def check_board(self):
+        self.board.check_peices()
+        
     def decode_fen(self):
         fen_to_position = fen_parser.FenToChessPosition(self.fen_position)
         return fen_to_position.parse()
@@ -91,9 +139,8 @@ class gameState():
         position_to_fen = fen_parser.ChessPositionToFEN(self.board.image_board)
         self.fen_position = position_to_fen.board_to_fen()
         return self.fen_position
-                
-        return None
-    
+
+
     def get_image_board(self):
         return self.board.image_board
     

@@ -21,6 +21,7 @@ I'm planning to create a chess a chess game with a 2 player mode and AI mode bas
 - Finish peices!!!!
 - Change colour of clicked button
 - PRIORITY: Get position of peice
+- Change drawing modes
 
 ## Chess engine
 

@@ -1,19 +1,25 @@
 import pygame
 
+HEIGHT = 700
+WIDTH = 700
+
+DIMENSION = 8
+SQ_HEIGHT = HEIGHT / DIMENSION
+SQ_WIDTH = WIDTH / DIMENSION
+
 class peice():
     def __init__(self,id,pos):
         self.first_move: bool = True
-        self.is_white: bool 
         self.position: tuple = pos
         self.id: str = id
+        self.is_white: bool = True if self.id in 'PRNBQK'  else False
         
+    def get_position(self):
+        return self.position
+    
     # Gets overided in child classes
     def get_moves(self):
         return None
-
-     
-    def peice_captured(self):
-        pass
     
     
     def move_peice(self,move):
@@ -29,9 +35,7 @@ class peice():
 class Rook(peice):
     def __init__(self,id,pos):
         super().__init__(id,pos)
-        self.id = id
         self.is_white = True if id[0] == 'w' else False
-        self.position: tuple
             
     
     def get_moves(self):
@@ -93,35 +97,3 @@ class Pawn(peice):
         return []
             
             
-
-    
-def load_images(images,SQ_HEIGHT,SQ_WIDTH):
-    peices = ["bR", "bN", "bB", "bQ", "bK", "wQ", "wK", "wB", "wN", "wR", "bp", "wp"]   
-    peice_names = ['R','N','B','Q','K','q','k','b','n','r','P','p']
-    for i in range(len(peices)):
-        images[peice_names[i]] = pygame.transform.scale(pygame.image.load("img/" + peices[i] + ".png"), (SQ_WIDTH, SQ_HEIGHT))
-
-
-def draw_init(screen,menu,game_select,game_state,DIMENSION,images,SQ_HEIGHT,SQ_WIDTH):
-    if menu == True:
-        draw_board(screen,DIMENSION,SQ_HEIGHT,SQ_WIDTH)
-        game_select.display_menu(screen)
-    else:
-        draw_board(screen,DIMENSION,SQ_HEIGHT,SQ_WIDTH)
-        draw_peices(screen,game_state,DIMENSION,images,SQ_HEIGHT,SQ_WIDTH)
-    
-
-def draw_peices(screen,game_state,DIMENSION,images,SQ_HEIGHT,SQ_WIDTH):
-    for row in range(DIMENSION):
-        for col in range(DIMENSION):
-            piece = game_state.image_board[row][col]
-            if piece != '-':
-                screen.blit(images[piece], pygame.Rect(col*SQ_WIDTH, row*SQ_HEIGHT, SQ_WIDTH, SQ_HEIGHT))
-                
-                
-def draw_board(screen,DIMENSION,SQ_HEIGHT,SQ_WIDTH):
-    colors = [pygame.Color('#DDC9B4'),pygame.Color('#AA815D')]
-    for row in range(DIMENSION):
-        for col in range(DIMENSION):
-            color = colors[((row + col) % 2)]
-            pygame.draw.rect(screen, color, pygame.Rect(col*SQ_WIDTH, row*SQ_HEIGHT, SQ_WIDTH, SQ_HEIGHT))  
