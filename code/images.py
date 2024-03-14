@@ -9,7 +9,7 @@ SQ_WIDTH = WIDTH / DIMENSION
 
 def load_images(images):
     peices = ["bR", "bN", "bB", "bQ", "bK", "wQ", "wK", "wB", "wN", "wR", "bp", "wp"]   
-    peice_names = ['R','N','B','Q','K','q','k','b','n','r','P','p']
+    peice_names = ['r','n','b','q','k','Q','K','B','N','R','p','P']
     for i in range(len(peices)):
         images[peice_names[i]] = pygame.transform.scale(pygame.image.load("img/" + peices[i] + ".png"), (SQ_WIDTH, SQ_HEIGHT))
 

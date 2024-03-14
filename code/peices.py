@@ -15,7 +15,7 @@ class peice():
         self.is_white: bool = True if self.id in 'PRNBQK'  else False
         
     def update_position(self,pos):
-        self.pos = pos
+        self.position = pos
     
     def get_position(self):
         return self.position
@@ -23,16 +23,7 @@ class peice():
     # Gets overided in child classes
     def get_moves(self):
         return None
-    
-    
-    def move_peice(self,move):
-        if move in self.get_moves():
-            pass
-        else:
-            pass
-    
-    def draw_piece(self):
-        pass
+
     
     
 class Rook(peice):
@@ -44,9 +35,10 @@ class Rook(peice):
     def get_moves(self):
         possible_moves = []
         # up,right,down,left
-        for i in range(7):
-            for j in range(7):
-                pass
+        for row in range(7):
+            pass
+        for col in range(7):
+            pass
         return possible_moves
             
             

@@ -1,6 +1,7 @@
 import pygame
 import fen_parser
 from peices import *
+from typing import Tuple
 
 HEIGHT = 700
 WIDTH = 700
@@ -74,17 +75,20 @@ class Board():
             return self.piece_count - current_count
         return 0
     
-    def find_peice(self,pos):
-        for i in range(7):
-            if pos == self.black_pieces[i].get_position():
-                return (str(i) + 'bP')
-            elif pos == self.white_pieces[i].get_position():
-                return (str(i) + 'wP')
-            elif pos == self.black_pawns[i].get_position():
-                return (str(i) + 'bp')
-            elif pos == self.white_pawns[i].get_position():
-                return (str(i) + 'wp')
-                
+    def find_peice(self,pos) -> Tuple[int,str]:
+        for i in range(8):
+            if pos[0] == self.black_pieces[i].get_position()[0] and pos[1] == self.black_pieces[i].get_position()[1]:
+                list_pos = i
+                return list_pos,'bP'
+            elif pos[0] == self.white_pieces[i].get_position()[0] and pos[1] == self.white_pieces[i].get_position()[1]:
+                list_pos = i
+                return list_pos, 'wP'
+            elif pos[0] == self.black_pawns[i].get_position()[0] and pos[1] == self.black_pawns[i].get_position()[1]:
+                list_pos = i
+                return list_pos,'bp'
+            elif pos[0] == self.white_pawns[i].get_position()[0] and pos[1] == self.white_pawns[i].get_position()[1]:
+                list_pos = i
+                return list_pos,'wp'
                 
         
         '''
@@ -109,7 +113,7 @@ class ButtonArray():
         x = mouse_pos[0]//SQ_WIDTH
         y = mouse_pos[1]//SQ_HEIGHT
         
-        return (x,y)
+        return (y,x)
         
         
     def add_button_press(self):
@@ -129,6 +133,9 @@ class ButtonArray():
         if self.input_pos[1] == -1:
             return [-1,-1]
         return self.input_pos
+
+    def reset_input_pos(self):
+        self.input_pos = [-1,-1]
             
             
 
@@ -151,9 +158,35 @@ class gameState():
             self.move_pieces()
             
     def move_pieces(self):
-        piece_reference = self.board.find_peice(self.button_array.get_input_pos()[0])
-        print(self.button_array.get_input_pos())
-        # TODO: Check for peice with same pos
+        piece_data = self.board.find_peice(self.button_array.get_input_pos()[0]) 
+        if piece_data != None:
+            list_pos, list_reference = piece_data
+        else:
+            self.button_array.reset_input_pos()
+            return
+        # move piece on board
+                
+        piece_pos = self.button_array.get_input_pos()
+        temp = self.board.image_board[int(piece_pos[0][0])][int(piece_pos[0][1])]
+        self.board.image_board[int(piece_pos[0][0])][int(piece_pos[0][1])] = '-'
+        self.board.image_board[int(piece_pos[1][0])][int(piece_pos[1][1])] = temp
+        
+        
+        # Change pos of piece
+        if list_reference == 'wp':
+            self.board.white_pawns[list_pos].update_position(self.button_array.get_input_pos()[1])
+        elif list_reference == 'bp':
+            self.board.black_pawns[list_pos].update_position(self.button_array.get_input_pos()[1])
+        elif list_reference == 'wP':
+            self.board.white_pieces[list_pos].update_position(self.button_array.get_input_pos()[1])
+        elif list_reference == 'bP':
+            self.board.black_pieces[list_pos].update_position(self.button_array.get_input_pos()[1])
+        # Check collision and colour
+        
+
+
+        
+        # TODO: Check for peice with same pos   
         
     
     def check_board(self):

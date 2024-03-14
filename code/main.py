@@ -24,9 +24,6 @@ clock = pygame.time.Clock()
 screen.fill((221, 201, 180))
 pygame.display.set_caption('Chess')
 
-# https://www.chess.com/terms/fen-chess#:~:text=It%20starts%20describing%20the%20content,and%20go%20to%20the%20eighth.
-fen_position = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
-
 
 game_select = selectscreen.gameSelect(screen)
 game_state = engine.gameState()
