@@ -112,11 +112,28 @@ class Knight(peice):
         super().__init__(id,pos)
         
     
-    def get_moves(self):
+    def get_moves(self,board):
         possible_moves = []
+        # Casting to make co-ords muttable
+        list_pos = list(self.position)
         
-        for i in [[],[],[],[]]:
-            pass
+        for i in [[1,1],[-1,1],[-1,-1],[1,-1]]:
+            for j in [[1,2],[2,1]]:
+                hit_piece = False
+                move_pos = [list_pos[0] + (i[0]*j[0]),list_pos[1] + (i[1]*j[1])]
+                
+                if move_pos == list_pos:
+                    continue
+                if move_pos[0] > 7 or move_pos[0] < 0 or move_pos[1] > 7 or move_pos[1] < 0 or hit_piece:
+                    continue
+                else:
+                    if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
+                        hit_piece = True
+                    elif board[int(move_pos[0])][int(move_pos[1])] != '-':
+                        possible_moves.append(tuple(move_pos))
+                        hit_piece = True
+                    else:
+                        possible_moves.append(tuple(move_pos))
         return possible_moves
             
             
@@ -125,9 +142,63 @@ class Queen(peice):
         super().__init__(id,pos)
         
     
-    def get_moves(self):
-        # Vectors inside array
-        return []
+    def get_moves(self,board):
+        possible_moves = []
+        # Casting to make co-ords muttable
+        list_pos = list(self.position)
+        # NE,SE,SW,NW
+        for i in [1,-1]:
+            for j in [1,-1]:
+                hit_piece = False
+                for k in range(8):
+                    move_pos = [list_pos[0] + (i*k), list_pos[1] + (j*k)]
+                    if move_pos == list_pos:
+                        continue
+                    if move_pos[0] > 7 or move_pos[0] < 0 or move_pos[1] > 7 or move_pos[1] < 0 or hit_piece:
+                        break
+                    else:
+                        if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
+                            hit_piece = True
+                        elif board[int(move_pos[0])][int(move_pos[1])] != '-':
+                            possible_moves.append(tuple(move_pos))
+                            hit_piece = True
+                        else:
+                            possible_moves.append(tuple(move_pos))
+        
+        #right,up,left,down           
+        for i in [1,-1]:
+            hit_peice = False
+            for row in range(8):
+                move_pos = [list_pos[0], list_pos[1] + (i*row)]
+                if move_pos == list_pos:
+                    continue
+                if move_pos[1] > 7 or move_pos[1] < 0 or hit_peice:
+                    break
+                else:
+                    if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
+                        hit_peice = True
+                    elif board[int(move_pos[0])][int(move_pos[1])] != '-':
+                        possible_moves.append(tuple(move_pos))
+                        hit_peice = True
+                    else:
+                        possible_moves.append(tuple(move_pos))
+                        
+            for col in range(7):
+                move_pos = [list_pos[0] + (i*col), list_pos[1]]
+                if move_pos == list_pos:
+                    continue
+                if move_pos[0] > 7 or move_pos[0] < 0 or hit_peice:
+                    break
+                else:
+                    if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
+                        hit_peice = True
+                    elif board[int(move_pos[0])][int(move_pos[1])] != '-':
+                        possible_moves.append(tuple(move_pos))
+                        hit_peice = True
+                    else:
+                        possible_moves.append(tuple(move_pos))
+                            
+        return possible_moves
             
             
 class King(peice):
@@ -135,9 +206,26 @@ class King(peice):
         super().__init__(id,pos)
         
     
-    def get_moves(self):
-        # Vectors inside array
-        return []
+    def get_moves(self,board):
+        # TODO: Don't move into check!!!
+        possible_moves = []
+        
+        list_pos = list(self.position)
+        for i in [[1,1],[1,0],[1,-1],[-1,1],[-1,0],[-1,-1],[0,1],[0,-1]]:
+            move_pos = [list_pos[0] + i[0],list_pos[1] + i[1]]
+            hit_piece = False
+            if move_pos[0] > 7 or move_pos[0] < 0 or move_pos[1] > 7 or move_pos[1] < 0 or hit_piece:
+                continue
+            else:
+                if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
+                    hit_piece = True
+                elif board[int(move_pos[0])][int(move_pos[1])] != '-':
+                    possible_moves.append(tuple(move_pos))
+                    hit_piece = True
+                else:
+                    possible_moves.append(tuple(move_pos))
+        return possible_moves
+        
             
             
 class Pawn(peice):
@@ -145,8 +233,51 @@ class Pawn(peice):
         super().__init__(id,pos)
 
     
-    def get_moves(self):
-        # Vectors inside array
-        return []
+    def get_moves(self,board):
+        # TODO: Promotion
+        possible_moves = []
+        
+        list_pos = list(self.position)
+        if self.is_white:
+            if self.first_move:
+                for i in range(2):
+                    move_pos = [list_pos[0]-i,list_pos[1]]
+                    if board[int(move_pos[0])][int(move_pos[1])] != '-':
+                        break
+                    else:
+                        possible_moves.append(tuple(move_pos))
+            
+            else:
+                move_pos = [list_pos[0] - 1,list_pos[1]]
+                if board[int(move_pos[0])][int(move_pos[1])] == '-':
+                    possible_moves.append(tuple(move_pos))
+            
+            for i in [[-1,-1],[-1,1]]:
+                move_pos = [list_pos[0] + i[0], list_pos[1] + i[1]]
+                if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
+                    possible_moves.append(move_pos)
+        
+        else:
+            if self.first_move:
+                for i in range(2):
+                    move_pos = [list_pos[0]+i,list_pos[1]]
+                    if board[int(move_pos[0])][int(move_pos[1])] != '-':
+                        break
+                    else:
+                        possible_moves.append(tuple(move_pos))
+            
+            else:
+                move_pos = [list_pos[0] + 1,list_pos[1]]
+                if board[int(move_pos[0])][int(move_pos[1])] == '-':
+                    possible_moves.append(tuple(move_pos))
+            
+            for i in [[1,-1],[1,1]]:
+                move_pos = [list_pos[0] + i[0], list_pos[1] + i[1]]
+                if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
+                    possible_moves.append(tuple(move_pos))  
+                    
+                
+                            
+        return possible_moves
             
             
