@@ -19,7 +19,7 @@ class Board():
             ['p','p','p','p','p','p','p','p'],
             ['-','-','-','-','-','-','-','-'],
             ['-','-','-','-','-','-','-','-'],
-            ['-','-','-','-','-','-','-','-'],
+            ['-','-','-','-','B','-','-','-'],
             ['-','-','-','-','-','-','-','-'],
             ['P','P','P','P','P','P','P','P'],
             ['R','N','B','Q','K','B','N','R']    
@@ -50,7 +50,7 @@ class Board():
         self.white_pieces = [
             Rook('wr1',(7,0)),
             Knight('wn1',(7,1)),
-            Bishop('wb1',(7,2)),
+            Bishop('wb1',(4,4)),
             Queen('wq1',(7,3)),
             King('wk1',(7,4)),
             Bishop('wb2',(7,5)),
@@ -76,20 +76,38 @@ class Board():
         return 0
     
     def find_peice(self,pos) -> Tuple[int,str]:
-        for i in range(8):
+        for i in range(len(self.black_pieces)):
             if pos[0] == self.black_pieces[i].get_position()[0] and pos[1] == self.black_pieces[i].get_position()[1]:
                 list_pos = i
                 return list_pos,'bP'
-            elif pos[0] == self.white_pieces[i].get_position()[0] and pos[1] == self.white_pieces[i].get_position()[1]:
+        for i in range(len(self.white_pieces)):    
+            if pos[0] == self.white_pieces[i].get_position()[0] and pos[1] == self.white_pieces[i].get_position()[1]:
                 list_pos = i
                 return list_pos, 'wP'
-            elif pos[0] == self.black_pawns[i].get_position()[0] and pos[1] == self.black_pawns[i].get_position()[1]:
+        for i in range(len(self.black_pawns)):
+            if pos[0] == self.black_pawns[i].get_position()[0] and pos[1] == self.black_pawns[i].get_position()[1]:
                 list_pos = i
                 return list_pos,'bp'
-            elif pos[0] == self.white_pawns[i].get_position()[0] and pos[1] == self.white_pawns[i].get_position()[1]:
+        for i in range(len(self.white_pawns)):
+            if pos[0] == self.white_pawns[i].get_position()[0] and pos[1] == self.white_pawns[i].get_position()[1]:
                 list_pos = i
                 return list_pos,'wp'
                 
+        return None
+    
+    def find_peice_colour(self,pos):
+        for i in range(len(self.black_pieces)):
+            if pos[0] == self.black_pieces[i].get_position()[0] and pos[1] == self.black_pieces[i].get_position()[1]:
+                return self.black_pieces[i].get_colour()
+        for i in range(len(self.white_pieces)):
+            if pos[0] == self.white_pieces[i].get_position()[0] and pos[1] == self.white_pieces[i].get_position()[1]:
+                return self.white_pieces[i].get_colour()
+        for i in range(len(self.black_pawns)):
+            if pos[0] == self.black_pawns[i].get_position()[0] and pos[1] == self.black_pawns[i].get_position()[1]:
+                return self.black_pawns[i].get_colour()
+        for i in range(len(self.white_pawns)):
+            if pos[0] == self.white_pawns[i].get_position()[0] and pos[1] == self.white_pawns[i].get_position()[1]:
+                return self.white_pawns[i].get_colour()
         
         '''
         self.peice_board = [
@@ -164,30 +182,62 @@ class gameState():
         else:
             self.button_array.reset_input_pos()
             return
-        # move piece on board
-                
-        piece_pos = self.button_array.get_input_pos()
-        temp = self.board.image_board[int(piece_pos[0][0])][int(piece_pos[0][1])]
-        self.board.image_board[int(piece_pos[0][0])][int(piece_pos[0][1])] = '-'
-        self.board.image_board[int(piece_pos[1][0])][int(piece_pos[1][1])] = temp
         
-        
-        # Change pos of piece
         if list_reference == 'wp':
-            self.board.white_pawns[list_pos].update_position(self.button_array.get_input_pos()[1])
-        elif list_reference == 'bp':
-            self.board.black_pawns[list_pos].update_position(self.button_array.get_input_pos()[1])
-        elif list_reference == 'wP':
-            self.board.white_pieces[list_pos].update_position(self.button_array.get_input_pos()[1])
-        elif list_reference == 'bP':
-            self.board.black_pieces[list_pos].update_position(self.button_array.get_input_pos()[1])
-        # Check collision and colour
+            selected_piece = self.board.white_pawns[list_pos]
+        if list_reference == 'bp':
+            selected_piece = self.board.black_pawns[list_pos]
+        if list_reference == 'wP':
+            selected_piece = self.board.white_pieces[list_pos]
+        if list_reference == 'bP':
+            selected_piece = self.board.black_pieces[list_pos]
         
-
-
+        print(selected_piece.get_moves(self.board.image_board))
+        if self.button_array.get_input_pos()[1] in selected_piece.get_moves(self.board.image_board):
+            
+            # Check for collision
+            piece_colour = self.board.find_peice_colour(self.button_array.get_input_pos()[1]) 
+            if piece_colour == None:
+                colour_check = True
+            else:
+                colour_check = piece_colour != selected_piece.get_colour()
+            
+            collision_data = self.board.find_peice(self.button_array.get_input_pos()[1])
+            if collision_data == None or colour_check:
+                
+                if colour_check and collision_data != None:
+                    list_pos_2nd, list_reference_2nd = collision_data
+                        
+                    if list_reference_2nd == 'wp':
+                        del self.board.white_pawns[list_pos_2nd]
+                    if list_reference_2nd == 'bp':
+                        del self.board.black_pawns[list_pos_2nd]
+                    if list_reference_2nd == 'wP':
+                        del self.board.white_pieces[list_pos_2nd]
+                    if list_reference_2nd == 'bP':
+                        del self.board.black_pieces[list_pos_2nd]
+                    
+                # move piece on board
+                piece_pos = self.button_array.get_input_pos()
+                temp = self.board.image_board[int(piece_pos[0][0])][int(piece_pos[0][1])]
+                self.board.image_board[int(piece_pos[0][0])][int(piece_pos[0][1])] = '-'
+                self.board.image_board[int(piece_pos[1][0])][int(piece_pos[1][1])] = temp
+                
+                # Change pos of piece
+                selected_piece.update_position(self.button_array.get_input_pos()[1])
+            
+            # Add selected_piece back into object list
+            if list_reference == 'wp':
+                self.board.white_pawns[list_pos] = selected_piece
+            if list_reference == 'bp':
+                self.board.black_pawns[list_pos] = selected_piece
+            if list_reference == 'wP':
+                self.board.white_pieces[list_pos] = selected_piece 
+            if list_reference == 'bP':
+                self.board.black_pieces[list_pos] = selected_piece
+            
         
-        # TODO: Check for peice with same pos   
-        
+        self.button_array.reset_input_pos()
     
     def check_board(self):
         self.board.check_peices()
