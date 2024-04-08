@@ -1,4 +1,5 @@
 import pygame
+from operator import xor
 
 HEIGHT = 700
 WIDTH = 700
@@ -16,6 +17,10 @@ class peice():
         
     def update_position(self,pos):
         self.position = pos
+        
+    def update_first_move(self):
+        if self.first_move:
+            self.first_move = False
     
     def get_position(self):
         return self.position
@@ -29,6 +34,8 @@ class peice():
     
     def get_id(self):
         return self.id
+    
+    
     
     
 class Rook(peice):
@@ -238,46 +245,45 @@ class Pawn(peice):
         possible_moves = []
         
         list_pos = list(self.position)
+        
         if self.is_white:
             if self.first_move:
                 for i in range(2):
-                    move_pos = [list_pos[0]-i,list_pos[1]]
-                    if board[int(move_pos[0])][int(move_pos[1])] != '-':
-                        break
-                    else:
+                    move_pos = [int(list_pos[0]-(i+1)),int(list_pos[1])]
+                    if board[move_pos[0]][move_pos[1]] == '-':
                         possible_moves.append(tuple(move_pos))
-            
+                    else:
+                        break
             else:
-                move_pos = [list_pos[0] - 1,list_pos[1]]
-                if board[int(move_pos[0])][int(move_pos[1])] == '-':
+                move_pos = [int(list_pos[0]-1),int(list_pos[1])]
+                if board[move_pos[0]][move_pos[1]] == '-':
                     possible_moves.append(tuple(move_pos))
-            
-            for i in [[-1,-1],[-1,1]]:
-                move_pos = [list_pos[0] + i[0], list_pos[1] + i[1]]
-                if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
-                    possible_moves.append(move_pos)
-        
+                    
+            for i in [-1,1]:
+                move_pos = [int(list_pos[0]-1),int(list_pos[1]+i)]
+                if board[move_pos[0]][move_pos[1]] != '-' and (self.is_white ^ bool(board[move_pos[0]][move_pos[1]] in 'PRNBQK')):
+                    possible_moves.append(tuple(move_pos))
+                    
+
         else:
             if self.first_move:
                 for i in range(2):
-                    move_pos = [list_pos[0]+i,list_pos[1]]
-                    if board[int(move_pos[0])][int(move_pos[1])] != '-':
-                        break
-                    else:
+                    move_pos = [int(list_pos[0]+(i+1)),int(list_pos[1])]
+                    if board[move_pos[0]][move_pos[1]] == '-':
                         possible_moves.append(tuple(move_pos))
+                    else:
+                        break
             
             else:
-                move_pos = [list_pos[0] + 1,list_pos[1]]
-                if board[int(move_pos[0])][int(move_pos[1])] == '-':
+                move_pos = [int(list_pos[0]+1),int(list_pos[1])]
+                if board[move_pos[0]][move_pos[1]] == '-':
                     possible_moves.append(tuple(move_pos))
-            
-            for i in [[1,-1],[1,1]]:
-                move_pos = [list_pos[0] + i[0], list_pos[1] + i[1]]
-                if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
-                    possible_moves.append(tuple(move_pos))  
                     
-                
-                            
+            for i in [-1,1]:
+                move_pos = [int(list_pos[0]+1),int(list_pos[1]+i)]
+                if board[move_pos[0]][move_pos[1]] != '-' and (self.is_white ^ bool(board[move_pos[0]][move_pos[1]] in 'PRNBQK')):
+                    possible_moves.append(tuple(move_pos))
+
+        print(possible_moves)
         return possible_moves
-            
-            
+    

@@ -21,6 +21,7 @@ I'm planning to create a chess a chess game with a 2 player mode and AI mode bas
 - Let 2p and AI run indepentantly
 - Change drawing modes
 - Add peice movement
+- Only let piece move if colour turn
 
 ## Chess engine
 

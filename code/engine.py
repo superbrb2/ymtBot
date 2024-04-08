@@ -1,5 +1,6 @@
 import pygame
 import fen_parser
+import math
 from peices import *
 from typing import Tuple
 
@@ -128,8 +129,8 @@ class ButtonArray():
         
     def get_position_of_press(self):
         mouse_pos = pygame.mouse.get_pos()
-        x = mouse_pos[0]//SQ_WIDTH
-        y = mouse_pos[1]//SQ_HEIGHT
+        x = int(math.floor(mouse_pos[0]//SQ_WIDTH))
+        y = int(math.floor(mouse_pos[1]//SQ_HEIGHT))
         
         return (y,x)
         
@@ -192,7 +193,7 @@ class gameState():
         if list_reference == 'bP':
             selected_piece = self.board.black_pieces[list_pos]
         
-        print(selected_piece.get_moves(self.board.image_board))
+        # print(selected_piece.get_moves(self.board.image_board))
         if self.button_array.get_input_pos()[1] in selected_piece.get_moves(self.board.image_board):
             
             # Check for collision
@@ -225,6 +226,9 @@ class gameState():
                 
                 # Change pos of piece
                 selected_piece.update_position(self.button_array.get_input_pos()[1])
+                
+                # Check for first move
+                selected_piece.update_first_move()
             
             # Add selected_piece back into object list
             if list_reference == 'wp':
