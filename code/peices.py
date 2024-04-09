@@ -284,6 +284,5 @@ class Pawn(peice):
                 if board[move_pos[0]][move_pos[1]] != '-' and (self.is_white ^ bool(board[move_pos[0]][move_pos[1]] in 'PRNBQK')):
                     possible_moves.append(tuple(move_pos))
 
-        print(possible_moves)
         return possible_moves
     

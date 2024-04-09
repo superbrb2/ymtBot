@@ -133,20 +133,20 @@ class ButtonArray():
         y = int(math.floor(mouse_pos[1]//SQ_HEIGHT))
         
         return (y,x)
-        
-        
-    def add_button_press(self):
+    
+    def add_button_press(self,image_board):
         new_pos: tuple = self.get_position_of_press()
-        
-        if self.input_pos[1] != -1:
-            self.input_pos = [-1,-1]
         
         if self.input_pos[0] == -1:
             self.input_pos[0] = new_pos
         elif self.input_pos[1] == -1:
             self.input_pos[1] = new_pos
-            if self.input_pos[0] == self.input_pos[1]:
-                self.input_pos = [-1,-1]
+        
+        if self.input_pos[0] == self.input_pos[1]:
+            self.input_pos = [-1,-1]
+        
+        if image_board[self.input_pos[0][0]][self.input_pos[0][1]]== '-':
+            self.input_pos = [-1,-1]
     
     def get_input_pos(self):
         if self.input_pos[1] == -1:
@@ -171,7 +171,7 @@ class gameState():
         self.pos_last_move: tuple
         
     def button_press(self):
-        self.button_array.add_button_press()
+        self.button_array.add_button_press(self.get_image_board())
         if self.button_array.get_input_pos()[1] != -1:
             self.pos_last_move = self.button_array.get_input_pos()[1]
             self.move_pieces()
@@ -193,8 +193,7 @@ class gameState():
         if list_reference == 'bP':
             selected_piece = self.board.black_pieces[list_pos]
         
-        # print(selected_piece.get_moves(self.board.image_board))
-        if self.button_array.get_input_pos()[1] in selected_piece.get_moves(self.board.image_board):
+        if self.button_array.get_input_pos()[1] in selected_piece.get_moves(self.board.image_board) and (selected_piece.is_white == self.white_to_move):
             
             # Check for collision
             piece_colour = self.board.find_peice_colour(self.button_array.get_input_pos()[1]) 
@@ -229,6 +228,8 @@ class gameState():
                 
                 # Check for first move
                 selected_piece.update_first_move()
+                
+                self.white_to_move = not self.white_to_move
             
             # Add selected_piece back into object list
             if list_reference == 'wp':
@@ -240,7 +241,7 @@ class gameState():
             if list_reference == 'bP':
                 self.board.black_pieces[list_pos] = selected_piece
             
-        
+
         self.button_array.reset_input_pos()
     
     def check_board(self):
