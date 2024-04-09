@@ -36,6 +36,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        if event.type == pygame.MOUSEBUTTONDOWN and menu == False:
+            game_state.button_press()
+        
         # Checks for menu button press
         if event.type == pygame.MOUSEBUTTONDOWN and menu == True:
             if game_select.button_pressed() == '2P':
@@ -45,9 +48,6 @@ while running:
             if game_select.button_pressed() == 'AI':
                 menu = False
                 AIengine.begin()
-        
-        if event.type == pygame.MOUSEBUTTONDOWN and menu == False:
-            game_state.button_press()
     draw_init(screen,menu,game_select,images,game_state.board.image_board)
     
     clock.tick(60)
