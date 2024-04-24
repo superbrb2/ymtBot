@@ -8,7 +8,7 @@ DIMENSION = 8
 SQ_HEIGHT = HEIGHT / DIMENSION
 SQ_WIDTH = WIDTH / DIMENSION
 
-class peice():
+class piece():
     def __init__(self,id,pos):
         self.first_move: bool = True
         self.position: tuple = pos
@@ -38,7 +38,7 @@ class peice():
     
     
     
-class Rook(peice):
+class Rook(piece):
     def __init__(self,id,pos):
         super().__init__(id,pos)
             
@@ -50,40 +50,41 @@ class Rook(peice):
         
         #right,up,left,down
         for i in [1,-1]:
-            hit_peice = False
+            hit_piece = False
             for row in range(8):
                 move_pos = [list_pos[0], list_pos[1] + (i*row)]
                 if move_pos == list_pos:
                     continue
-                if move_pos[1] > 7 or move_pos[1] < 0 or hit_peice:
+                if move_pos[1] > 7 or move_pos[1] < 0 or hit_piece:
                     break
                 else:
                     if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
-                        hit_peice = True
+                        hit_piece = True
                     elif board[int(move_pos[0])][int(move_pos[1])] != '-':
                         possible_moves.append(tuple(move_pos))
-                        hit_peice = True
+                        hit_piece = True
                     else:
                         possible_moves.append(tuple(move_pos))
-                        
+            
+            hit_piece = False     
             for col in range(7):
                 move_pos = [list_pos[0] + (i*col), list_pos[1]]
                 if move_pos == list_pos:
                     continue
-                if move_pos[0] > 7 or move_pos[0] < 0 or hit_peice:
+                if move_pos[0] > 7 or move_pos[0] < 0 or hit_piece:
                     break
                 else:
                     if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
-                        hit_peice = True
+                        hit_piece = True
                     elif board[int(move_pos[0])][int(move_pos[1])] != '-':
                         possible_moves.append(tuple(move_pos))
-                        hit_peice = True
+                        hit_piece = True
                     else:
                         possible_moves.append(tuple(move_pos))
         return possible_moves
             
             
-class Bishop(peice):
+class Bishop(piece):
     def __init__(self,id,pos):
         super().__init__(id,pos)
         
@@ -114,7 +115,7 @@ class Bishop(peice):
         return possible_moves
             
             
-class Knight(peice):
+class Knight(piece):
     def __init__(self,id,pos):
         super().__init__(id,pos)
         
@@ -144,7 +145,7 @@ class Knight(peice):
         return possible_moves
             
             
-class Queen(peice):
+class Queen(piece):
     def __init__(self,id,pos):
         super().__init__(id,pos)
         
@@ -174,44 +175,54 @@ class Queen(peice):
         
         #right,up,left,down           
         for i in [1,-1]:
-            hit_peice = False
-            for row in range(8):
+            hit_piece = False
+            for row in range(7):
                 move_pos = [list_pos[0], list_pos[1] + (i*row)]
                 if move_pos == list_pos:
                     continue
-                if move_pos[1] > 7 or move_pos[1] < 0 or hit_peice:
+                if move_pos[1] > 7 or move_pos[1] < 0 or hit_piece:
                     break
                 else:
                     if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
-                        hit_peice = True
+                        hit_piece = True
                     elif board[int(move_pos[0])][int(move_pos[1])] != '-':
                         possible_moves.append(tuple(move_pos))
-                        hit_peice = True
+                        hit_piece = True
                     else:
                         possible_moves.append(tuple(move_pos))
-                        
-            for col in range(7):
+            
+            hit_piece = False
+            for col in range(7):                    
                 move_pos = [list_pos[0] + (i*col), list_pos[1]]
+                if i == 1:
+                    print(move_pos)
                 if move_pos == list_pos:
                     continue
-                if move_pos[0] > 7 or move_pos[0] < 0 or hit_peice:
+                if move_pos[0] > 7 or move_pos[0] < 0 or hit_piece:
                     break
                 else:
                     if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
-                        hit_peice = True
+                        hit_piece = True
                     elif board[int(move_pos[0])][int(move_pos[1])] != '-':
                         possible_moves.append(tuple(move_pos))
-                        hit_peice = True
+                        hit_piece = True
                     else:
                         possible_moves.append(tuple(move_pos))
-                            
+        print(possible_moves)
         return possible_moves
             
             
-class King(peice):
+class King(piece):
     def __init__(self,id,pos):
         super().__init__(id,pos)
+        self.K_castle = True
+        self.Q_castle = True
+    
+    def update_K_castling(self):
+        self.K_castle = False
         
+    def update_Q_castling(self):
+        self.Q_castle = False
     
     def get_moves(self,board):
         # TODO: Don't move into check!!!
@@ -231,11 +242,19 @@ class King(peice):
                     hit_piece = True
                 else:
                     possible_moves.append(tuple(move_pos))
+                    
+        # Castling
+        # TODO castling
+        if self.is_white:
+            if self.first_move and board[7][6] == '-' and board[7][5] == '-' and self.K_castle:
+                pass
+            if self.first_move and board[0][6] == '-' and board[0][5] == '-' and self.K_castle:
+                pass
         return possible_moves
         
             
             
-class Pawn(peice):
+class Pawn(piece):
     def __init__(self,id,pos):
         super().__init__(id,pos)
 
@@ -261,8 +280,11 @@ class Pawn(peice):
                     
             for i in [-1,1]:
                 move_pos = [int(list_pos[0]-1),int(list_pos[1]+i)]
-                if board[move_pos[0]][move_pos[1]] != '-' and (self.is_white ^ bool(board[move_pos[0]][move_pos[1]] in 'PRNBQK')):
-                    possible_moves.append(tuple(move_pos))
+                try:
+                    if board[move_pos[0]][move_pos[1]] != '-' and (self.is_white ^ bool(board[move_pos[0]][move_pos[1]] in 'PRNBQK')):
+                        possible_moves.append(tuple(move_pos))
+                except IndexError as err:
+                    print(err)
                     
 
         else:
@@ -281,8 +303,12 @@ class Pawn(peice):
                     
             for i in [-1,1]:
                 move_pos = [int(list_pos[0]+1),int(list_pos[1]+i)]
-                if board[move_pos[0]][move_pos[1]] != '-' and (self.is_white ^ bool(board[move_pos[0]][move_pos[1]] in 'PRNBQK')):
-                    possible_moves.append(tuple(move_pos))
-
+                try:
+                    if board[move_pos[0]][move_pos[1]] != '-' and (self.is_white ^ bool(board[move_pos[0]][move_pos[1]] in 'PRNBQK')):
+                        possible_moves.append(tuple(move_pos))
+                except IndexError as err:
+                    print(err)
+                    
+        print(possible_moves)
         return possible_moves
     
