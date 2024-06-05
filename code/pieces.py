@@ -194,8 +194,6 @@ class Queen(piece):
             hit_piece = False
             for col in range(7):                    
                 move_pos = [list_pos[0] + (i*col), list_pos[1]]
-                if i == 1:
-                    print(move_pos)
                 if move_pos == list_pos:
                     continue
                 if move_pos[0] > 7 or move_pos[0] < 0 or hit_piece:
@@ -208,7 +206,6 @@ class Queen(piece):
                         hit_piece = True
                     else:
                         possible_moves.append(tuple(move_pos))
-        print(possible_moves)
         return possible_moves
             
             
@@ -309,6 +306,5 @@ class Pawn(piece):
                 except IndexError as err:
                     print(err)
                     
-        print(possible_moves)
         return possible_moves
     

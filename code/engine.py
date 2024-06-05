@@ -1,7 +1,8 @@
 import pygame
 import fen_parser
 import math
-from peices import *
+import images
+from pieces import *
 from typing import Tuple
 
 HEIGHT = 700
@@ -53,7 +54,7 @@ class Board():
             Knight('wn1',(7,1)),
             Bishop('wb1',(7,2)),
             Queen('wq1',(7,3)),
-            King('wk1',(4,4)),
+            King('wk1',(7,4)),
             Bishop('wb2',(7,5)),
             Knight('wn2',(7,6)),
             Rook('wr2',(7,7))
@@ -70,13 +71,24 @@ class Board():
             Rook('br2',(0,7))
         ]
         
-    def check_peices(self):
+    def check_pieces(self):
         current_count = len(self.white_pawns)+len(self.white_pieces)+len(self.black_pawns)+len(self.black_pieces)
         if current_count != self.piece_count:
             return self.piece_count - current_count
         return 0
     
-    def find_peice(self,pos) -> Tuple[int,str]:
+    def find_king(self,is_white):
+        if is_white:
+            for i in range(len(self.white_pieces)):
+                if type(self.white_pieces[i]) == King:
+                    pos = self.white_pieces[i].get_position()
+        else:
+            for i in range(len(self.black_pieces)):
+                if type(self.black_pieces[i]) == King:
+                    pos = self.black_pieces[i].get_position()
+        return pos
+    
+    def find_piece(self,pos) -> Tuple[int,str]:
         for i in range(len(self.black_pieces)):
             if pos[0] == self.black_pieces[i].get_position()[0] and pos[1] == self.black_pieces[i].get_position()[1]:
                 list_pos = i
@@ -96,7 +108,7 @@ class Board():
                 
         return None
     
-    def find_peice_colour(self,pos):
+    def find_piece_colour(self,pos):
         for i in range(len(self.black_pieces)):
             if pos[0] == self.black_pieces[i].get_position()[0] and pos[1] == self.black_pieces[i].get_position()[1]:
                 return self.black_pieces[i].get_colour()
@@ -111,7 +123,7 @@ class Board():
                 return self.white_pawns[i].get_colour()
         
         '''
-        self.peice_board = [
+        self.piece_board = [
             [Rook('br1',(0,0)),Knight('bn1'),Bishop('bb1'),Queen('bq1'),King('bk1'),Bishop('bb2'),Knight('bn2'),Rook('br2')],
             [Pawn('bp1'),Pawn('bp2'),Pawn('bp3'),Pawn('bp4'),Pawn('bp5'),Pawn('bp6'),Pawn('bp7'),Pawn('bp8')],
             ['-','-','-','-','-','-','-','-'],
@@ -141,16 +153,14 @@ class ButtonArray():
             self.input_pos[0] = new_pos
         elif self.input_pos[1] == -1:
             self.input_pos[1] = new_pos
+            
+        if image_board[self.input_pos[0][0]][self.input_pos[0][1]] == '-':
+            self.input_pos = [-1,-1]
         
         if self.input_pos[0] == self.input_pos[1]:
             self.input_pos = [-1,-1]
         
-        if image_board[self.input_pos[0][0]][self.input_pos[0][1]]== '-':
-            self.input_pos = [-1,-1]
-    
     def get_input_pos(self):
-        if self.input_pos[1] == -1:
-            return [-1,-1]
         return self.input_pos
 
     def reset_input_pos(self):
@@ -167,23 +177,18 @@ class gameState():
         self.white_to_move = True
         self.enpassant_pos: tuple 
         self.castling: str
+        self.in_check = False
         
         self.pos_last_move: tuple
-        
-    def button_press(self):
-        self.button_array.add_button_press(self.get_image_board())
-        if self.button_array.get_input_pos()[1] != -1:
-            self.pos_last_move = self.button_array.get_input_pos()[1]
-            self.move_pieces()
-            
-    def move_pieces(self):
-        piece_data = self.board.find_peice(self.button_array.get_input_pos()[0]) 
+    
+    def find_piece_wrapped(self):
+        piece_data = self.board.find_piece(self.button_array.get_input_pos()[0]) 
         if piece_data != None:
             list_pos, list_reference = piece_data
         else:
             self.button_array.reset_input_pos()
             return
-        
+            
         if list_reference == 'wp':
             selected_piece = self.board.white_pawns[list_pos]
         if list_reference == 'bp':
@@ -193,16 +198,70 @@ class gameState():
         if list_reference == 'bP':
             selected_piece = self.board.black_pieces[list_pos]
         
-        if self.button_array.get_input_pos()[1] in selected_piece.get_moves(self.board.image_board) and (selected_piece.is_white == self.white_to_move):
+        return selected_piece, list_pos, list_reference
+    
+    def button_press(self):
+        self.button_array.add_button_press(self.get_image_board())
+        
+        if self.button_array.get_input_pos()[0] != -1:
+            selected_piece, _, _ = self.find_piece_wrapped()
+            print(selected_piece.get_colour())
+            if self.button_array.get_input_pos()[0] != -1 and self.button_array.get_input_pos()[1] == -1 and not (self.white_to_move ^ selected_piece.get_colour()):
+                images.save_draw_pos_moves(selected_piece.get_moves(self.board.image_board))    
+            else:
+                images.save_draw_pos_moves([]) 
             
+            
+        if self.button_array.get_input_pos()[1] != -1:
+            self.pos_last_move = self.button_array.get_input_pos()[1]
+            self.move_pieces()
+    
+    def check_for_check_W(self,king_pos,board):
+       return 0
+    '''
+        king_pos = list(king_pos)
+        for i in [1,-1]:
+            for j in [1,-1]:
+                hit_piece = False
+                for k in range(8):
+                    move_pos = [king_pos[0] + (i*k), king_pos[1] + (j*k)]
+                    if move_pos == king_pos:
+                        continue
+                    if move_pos[0] > 7 or move_pos[0] < 0 or move_pos[1] > 7 or move_pos[1] < 0 or hit_piece:
+                        break
+                    else:
+                        if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
+                            hit_piece = True
+                        elif board[int(move_pos[0])][int(move_pos[1])] != '-':
+                            possible_moves.append(tuple(move_pos))
+                            hit_piece = True
+                        else:
+                            possible_moves.append(tuple(move_pos))
+        
+    '''
+    def check_for_check_B(self,king_pos,board):
+        return 0
+    
+    def move_pieces(self):
+        selected_piece, list_pos, list_reference = self.find_piece_wrapped()
+        
+        # Checks if they are in check
+        if self.white_to_move:
+            self.in_check = self.check_for_check_W(self.board.find_king(True),self.board.image_board)
+        else:   
+            self.in_check = self.check_for_check_B(self.board.find_king(False),self.board.image_board)
+        # Checks if moving a piece will result in king being in check TODO
+        
+        if self.button_array.get_input_pos()[1] in selected_piece.get_moves(self.board.image_board) and (selected_piece.is_white == self.white_to_move):
+
             # Check for collision
-            piece_colour = self.board.find_peice_colour(self.button_array.get_input_pos()[1]) 
+            piece_colour = self.board.find_piece_colour(self.button_array.get_input_pos()[1]) 
             if piece_colour == None:
                 colour_check = True
             else:
                 colour_check = piece_colour != selected_piece.get_colour()
             
-            collision_data = self.board.find_peice(self.button_array.get_input_pos()[1])
+            collision_data = self.board.find_piece(self.button_array.get_input_pos()[1])
             if collision_data == None or colour_check:
                 
                 if colour_check and collision_data != None:
@@ -241,11 +300,11 @@ class gameState():
             if list_reference == 'bP':
                 self.board.black_pieces[list_pos] = selected_piece
             
-
         self.button_array.reset_input_pos()
+        self.in_check = False
     
     def check_board(self):
-        self.board.check_peices()
+        self.board.check_pieces()
         
     def decode_fen(self):
         fen_to_position = fen_parser.FenToChessPosition(self.fen_position)

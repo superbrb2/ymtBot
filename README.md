@@ -13,15 +13,9 @@ I'm planning to create a chess a chess game with a 2 player mode and AI mode bas
 
 ## TODO
 
-- Vectors
+- Pieces of the same colour show coloured spaces over eachother
 - Find where FEN is needed
-- Finish peices!!!!
-- Change colour of clicked button
-- PRIORITY: Get position of peice
 - Let 2p and AI run indepentantly
-- Change drawing modes
-- Add peice movement
-- Only let piece move if colour turn
 
 ## Chess engine
 
@@ -35,7 +29,7 @@ None so far...
 |Inputing positions with notation | Feb - Mar|
 |Movement using vectors | Mar - Apr|
 |En passant | Apr - May|
-|Finding checkmate| May - June |
+|Finding checkmate/Draws| May - June |
 |Game select Screen |June - July|
 |2 player chess Mode | July - Sep|
 |Chess Engine Mode | Sep - Dec|

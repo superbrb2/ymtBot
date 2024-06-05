@@ -6,8 +6,8 @@ import engine
 
 from images import *
 
-HEIGHT = 700
-WIDTH = 700
+HEIGHT = 704
+WIDTH = 704
 
 DIMENSION = 8
 SQ_HEIGHT = HEIGHT / DIMENSION
@@ -34,23 +34,24 @@ running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
-
-        if event.type == pygame.MOUSEBUTTONDOWN and menu == False:
-            game_state.button_press()
+            running = False                
         
         # Checks for menu button press
-        if event.type == pygame.MOUSEBUTTONDOWN and menu == True:
-            if game_select.button_pressed() == '2P':
+        if event.type == pygame.MOUSEBUTTONDOWN and menu == True:   
+            game_mode = game_select.button_pressed()
+            if game_mode != None:
                 menu = False
-                two_player.begin()
                 
-            if game_select.button_pressed() == 'AI':
-                menu = False
-                AIengine.begin()
-    draw_init(screen,menu,game_select,images,game_state.board.image_board)
+        if menu == False:
+            if game_mode == '2P':
+                two_player.begin(screen,images,game_state,event)
+            else:
+                AIengine.begin(screen,images,game_state,event)
+                    
+        else:
+            draw_menu(screen,game_select)
     
-    clock.tick(60)
+    clock.tick(30)
     pygame.display.flip()
             
                     

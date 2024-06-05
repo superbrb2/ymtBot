@@ -31,3 +31,4 @@ class gameSelect():
         # Second Button position
         if WIDTH/14 <= mouse_pos[0] <= (WIDTH/14)+((WIDTH*6)/7) and (HEIGHT*5)/7 <= mouse_pos[1] <= ((HEIGHT*5)/7)+(HEIGHT/7):
             return self.option_list[1]
+        return None
