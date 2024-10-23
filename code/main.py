@@ -34,10 +34,10 @@ running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False                
+            running = False
         
         # Checks for menu button press
-        if event.type == pygame.MOUSEBUTTONDOWN and menu == True:   
+        if event.type == pygame.MOUSEBUTTONDOWN and menu == True:
             game_mode = game_select.button_pressed()
             if game_mode != None:
                 menu = False
@@ -46,7 +46,7 @@ while running:
             if game_mode == '2P':
                 two_player.begin(screen,images,game_state,event)
             else:
-                AIengine.begin(screen,images,game_state,event)
+                AIengine.begin()
                     
         else:
             draw_menu(screen,game_select)

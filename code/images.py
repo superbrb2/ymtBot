@@ -7,10 +7,7 @@ DIMENSION = 8
 SQ_HEIGHT = HEIGHT / DIMENSION
 SQ_WIDTH = WIDTH / DIMENSION
 
-
-        
 global pos_move_list
-
 pos_move_list = []
 
 def load_images(images):

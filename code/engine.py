@@ -88,7 +88,7 @@ class Board():
                     pos = self.black_pieces[i].get_position()
         return pos
     
-    def find_piece(self,pos) -> Tuple[int,str]:
+    def find_piece(self,pos) -> Tuple[int,str]|None:
         for i in range(len(self.black_pieces)):
             if pos[0] == self.black_pieces[i].get_position()[0] and pos[1] == self.black_pieces[i].get_position()[1]:
                 list_pos = i
@@ -181,7 +181,7 @@ class gameState():
         
         self.pos_last_move: tuple
     
-    def find_piece_wrapped(self):
+    def find_piece_wrapped(self) -> tuple[Pawn,int,str]:
         piece_data = self.board.find_piece(self.button_array.get_input_pos()[0]) 
         if piece_data != None:
             list_pos, list_reference = piece_data
@@ -205,11 +205,13 @@ class gameState():
         
         if self.button_array.get_input_pos()[0] != -1:
             selected_piece, _, _ = self.find_piece_wrapped()
-            print(selected_piece.get_colour())
-            if self.button_array.get_input_pos()[0] != -1 and self.button_array.get_input_pos()[1] == -1 and not (self.white_to_move ^ selected_piece.get_colour()):
-                images.save_draw_pos_moves(selected_piece.get_moves(self.board.image_board))    
+            if selected_piece.get_moves(self.board.image_board) != []:
+                if self.button_array.get_input_pos()[0] != -1 and self.button_array.get_input_pos()[1] == -1 and not (self.white_to_move ^ selected_piece.get_colour()):
+                    images.save_draw_pos_moves(selected_piece.get_moves(self.board.image_board))    
+                else:
+                    images.save_draw_pos_moves([]) 
             else:
-                images.save_draw_pos_moves([]) 
+                self.button_array.reset_input_pos()
             
             
         if self.button_array.get_input_pos()[1] != -1:

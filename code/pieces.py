@@ -1,4 +1,3 @@
-import pygame
 from operator import xor
 
 HEIGHT = 700
@@ -14,6 +13,7 @@ class piece():
         self.position: tuple = pos
         self.id: str = id
         self.is_white: bool = True if self.id[0] == 'w'  else False
+        print(self.is_white,id)
         
     def update_position(self,pos):
         self.position = pos
@@ -127,21 +127,18 @@ class Knight(piece):
         
         for i in [[1,1],[-1,1],[-1,-1],[1,-1]]:
             for j in [[1,2],[2,1]]:
-                hit_piece = False
                 move_pos = [list_pos[0] + (i[0]*j[0]),list_pos[1] + (i[1]*j[1])]
                 
-                if move_pos == list_pos:
+                if move_pos[0] > 7 or move_pos[0] < 0 or move_pos[1] > 7 or move_pos[1] < 0:
                     continue
-                if move_pos[0] > 7 or move_pos[0] < 0 or move_pos[1] > 7 or move_pos[1] < 0 or hit_piece:
-                    continue
-                else:
-                    if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
-                        hit_piece = True
-                    elif board[int(move_pos[0])][int(move_pos[1])] != '-':
-                        possible_moves.append(tuple(move_pos))
-                        hit_piece = True
-                    else:
-                        possible_moves.append(tuple(move_pos))
+                print(self.is_white,board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK',move_pos)
+                
+                if (board[int(move_pos[0])][int(move_pos[1])] == '-'):
+                    possible_moves.append(tuple(move_pos))
+                    
+                if self.is_white != (board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
+                    possible_moves.append(tuple(move_pos))
+        print(possible_moves)
         return possible_moves
             
             
@@ -199,6 +196,7 @@ class Queen(piece):
                 if move_pos[0] > 7 or move_pos[0] < 0 or hit_piece:
                     break
                 else:
+                    print('bq, db', board[int(move_pos[0])][int(move_pos[1])] != '-', (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'),move_pos)
                     if board[int(move_pos[0])][int(move_pos[1])] != '-' and (self.is_white != board[int(move_pos[0])][int(move_pos[1])] in 'PRNBQK'):
                         hit_piece = True
                     elif board[int(move_pos[0])][int(move_pos[1])] != '-':
@@ -206,7 +204,15 @@ class Queen(piece):
                         hit_piece = True
                     else:
                         possible_moves.append(tuple(move_pos))
+                        
         return possible_moves
+        '''
+        arr = []
+        for i in possible_moves:
+            if self.is_white != (board[i[0]][i[1]] in list('KQRBKP')):
+                arr.append(i)
+        return arr
+        '''
             
             
 class King(piece):

@@ -16,6 +16,9 @@ I'm planning to create a chess a chess game with a 2 player mode and AI mode bas
 - Pieces of the same colour show coloured spaces over eachother
 - Find where FEN is needed
 - Let 2p and AI run indepentantly
+- Checks 
+- Attacking king
+
 
 ## Chess engine
 
